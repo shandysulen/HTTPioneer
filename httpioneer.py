@@ -4,6 +4,7 @@ import getpass
 from colorama import Fore, Back, Style, init
 init() #Start colorama
 
+# List of all major HTTP status codes
 status_codes = {
     100: "Continue",
     101: "Switching Protocols",
@@ -71,21 +72,28 @@ status_codes = {
 
 while True:
 
+    # Validate the URL
     while True:
         url = input("Enter a URL to determine the received HTTP response status code: ")
         if (validators.url(url)):
             break
         else:
-            print(Fore.RED + "ERROR: Invalid URL. Make sure to include \'http://\' or \'https://\'.")        
+            print(Fore.RED + "ERROR: Invalid URL. Make sure to include \'http://\' or \'https://\'.")
             print(Style.RESET_ALL)
 
+    # Get HTTP status code from URL
     res = urllib.request.urlopen(url)
     code = res.getcode()
 
+    # Print code to user console
     print(Fore.GREEN)
     print(code, "-", status_codes[res.getcode()]) if status_codes[res.getcode()] else print(code)
+
+    # Ask user for next action
     print(Fore.YELLOW)
     answer = getpass.getpass("Would you like to discover the HTTP response status code for another URL? (y/n)")
-    print(Style.RESET_ALL)    
+    print(Style.RESET_ALL)
+
+    # Repeat program or gracefully exit
     if answer != 'y' and answer != 'Y':
         break;
